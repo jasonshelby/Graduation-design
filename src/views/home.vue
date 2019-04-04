@@ -1,54 +1,73 @@
 
 <template>
   <div class="home">
-    背景（用心守护您的健康）
-    <br>
+    <img src="../assets/heart01.jpg" alt="">   
+    <Form>
+      <Menu :default-active="loginInForm.userType" class="Menu-demo" mode="horizontal" @select="handleSelect">
+        <MenuItem index="doctor">医师</MenuItem>
+        <MenuItem index="patient">患者</MenuItem>
+      </Menu>
 
-    登陆框
+      <FormItem label="账户" prop="username">
+        <el-input v-model.number="loginInForm.username" placeholder="请输入账户"></el-input>
+      </FormItem>
+      <FormItem label="密码" prop="password" >
+        <el-input v-model="loginInForm.password" :show-password="true" placeholder="请输入密码"></el-input>
+      </FormItem>
 
-
-    账户:<el-input v-model="username" placeholder="请输入内容"></el-input>
-    密码:<el-input v-model="password" placeholder="请输入内容"></el-input>
-
-    <el-button>登陆 </el-button>
-    <el-button type="primary">
-      <router-link to="/signin">注册</router-link>
-    </el-button>
-
-    (清空功能)
-
-
-
+      <FormItem>
+        <Button type="primary" @click="submitForm('loginInForm')">登陆</Button>
+        <router-link to="/signin">
+          <Button>注册</Button>
+        </router-link>
+      </FormItem>
+    </Form>
     
-    选项卡
-    （十天免登录功能）
-    登陆按钮
-    注册按钮（route sign in page）
+    <div class="line"></div>
+    1、密码清空功能
+    2、十天免登录功能
 
   </div>
 </template>
 
 <script>
-import { Input, Button } from 'element-ui'
 
-// console.log(Input)
+import { 
+  Input, 
+  Button,
+  Menu,
+  MenuItem,
+  Form,
+  FormItem,
+} from 'element-ui'
 
 export default {
   components: {
     "el-input": Input,
-    "el-button": Button
+    Button,
+    Menu,
+    MenuItem,
+    Form,
+    FormItem,
   },
   data() {
     return {
-      isDoctor: true,
-      username: '',
-      password: '',
+      loginInForm: {
+        userType: 'doctor',
+        username: '',
+        password: '',
+      }
     }
   },
   creatd() {
   },
   methods: {
-    
+    submitForm(){
+
+    },
+    handleSelect(){
+
+    }
   },
   
 }

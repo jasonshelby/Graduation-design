@@ -1,7 +1,7 @@
 
 <template>
   <div class="home">
-
+    
 
     patient/:id
       用户详情

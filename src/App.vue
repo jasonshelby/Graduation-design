@@ -1,12 +1,12 @@
 <template>
   <div id="app">
     <div id="nav">
-      导航栏  选择性展示：
+      导航
       <router-link to="/">Home</router-link> |
       <router-link to="/about">about</router-link> |
       <!-- 是否登陆 -->
       <router-link to="/signin">signin</router-link> |
-      <router-link to="/doctor">doctor</router-link> |
+      <router-link to="/doctor">doctor</router-link>
     </div>
     <router-view/>
   </div>
