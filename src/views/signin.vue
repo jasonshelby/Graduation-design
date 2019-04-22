@@ -1,121 +1,112 @@
 
 <template>
   <div class="home">
-    <Form 
-      ref="ruleForm" 
-      :model="ruleForm" 
+    
+    <el-form 
+      ref="signInForm" 
+      :model="signInForm" 
       :rules="rules" 
       :hide-required-asterisk="true"
     >
-      <FormItem label="账户" prop="username">
-        <el-input v-model.number="ruleForm.username" placeholder="请输入账户"></el-input>
-      </FormItem>
-      1、添加验证 字母或者数字
-      <FormItem label="密码" prop="password" >
-        <el-input v-model="ruleForm.password" :show-password="true" placeholder="请输入密码"></el-input>
-      </FormItem>
-      <FormItem label="确认密码" prop="checkPassword" >
-        <el-input v-model="ruleForm.checkPassword" :show-password="true" placeholder="确认密码"></el-input>
-      </FormItem>
-
+      <el-menu 
+          :default-active="signInForm.identity" 
+          class="Menu-demo" mode="horizontal" 
+          @select="handleSelect"
+        >
+        <el-menu-item index="patient" class="menu-item">患者</el-menu-item>
+        <el-menu-item index="doctor" class="menu-item">医师</el-menu-item>
+      </el-menu>
+      <el-form-item label="账户" prop="username">
+        <el-input v-model.number="signInForm.username" placeholder="请输入账户"></el-input>
+      </el-form-item>
+      <!-- @TODO添加验证 字母或者数字 -->
+      <el-form-item label="密码" prop="password" >
+        <el-input v-model="signInForm.password" :show-password="true" placeholder="请输入密码"></el-input>
+      </el-form-item>
+      <el-form-item label="确认密码" prop="checkPassword" >
+        <el-input v-model="signInForm.checkPassword" :show-password="true" placeholder="确认密码"></el-input>
+      </el-form-item>
       
-      <FormItem label="身份证号" prop="idNumber" >
-        <el-input v-model="ruleForm.idNumber"></el-input>
-      </FormItem>
-      <FormItem label="姓名" prop="name" >
-        <el-input v-model="ruleForm.name"></el-input>
-      </FormItem>
-      <FormItem label="性别" prop="sex">
-        <RadioGroup v-model="ruleForm.sex">
-          <Radio label="男"></Radio>
-          <Radio label="女"></Radio>
-        </RadioGroup>
-      </FormItem>
-      <FormItem label="年龄" prop="age">
-        <el-input v-model.number="ruleForm.age"></el-input>
-      </FormItem>
-      <FormItem label="身高" prop="height" >
-        <el-input v-model.number="ruleForm.height"></el-input>cm
-      </FormItem>
-      <FormItem label="体重" prop="weight" >
-        <el-input v-model.number="ruleForm.weight"></el-input>kg
-      </FormItem>
-      <FormItem label="电话" prop="phoneNumber" >
-        <el-input v-model.number="ruleForm.phoneNumber"></el-input>
-      </FormItem>
+      <!-- <el-form-item label="身份证号" prop="idNumber" >
+        <el-input v-model="signInForm.idNumber"></el-input>
+      </el-form-item> -->
+      <el-form-item label="姓名" prop="name" >
+        <el-input v-model="signInForm.name"></el-input>
+      </el-form-item>
+      <el-form-item label="性别" prop="gender">
+        <el-radio-group v-model="signInForm.gender">
+          <el-radio label="男"></el-radio>
+          <el-radio label="女"></el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="年龄" prop="age">
+        <el-input v-model.number="signInForm.age"></el-input>
+      </el-form-item>
+      <el-form-item label="身高" prop="height" >
+        <el-input v-model.number="signInForm.height"></el-input>cm
+      </el-form-item>
+      <el-form-item label="体重" prop="weight" >
+        <el-input v-model.number="signInForm.weight"></el-input>kg
+      </el-form-item>
+      <el-form-item label="电话" prop="phone" >
+        <el-input v-model.number="signInForm.phone"></el-input>
+      </el-form-item>
 
-      <FormItem>
-        <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
-      </FormItem>
-    </Form>
-    功能：表单验证（类型验证）
-
-    必填：
-    照片
-    有无病史（有无必填）
-    （支持添加病逝）
-    发病时间
+      <el-form-item>
+        <el-button type="primary" @click="submitForm">提交</el-button>
+        <el-button @click="resetForm">重置</el-button>
+      </el-form-item>
+    </el-form>
+    <!-- @TODO照片
     
-    2、必填标识
-    3、如何支持微信扫码登陆和注册
+    @TODO必填标识 -->
 
     <br>
-    选填：
+    <!-- @TODO选填：
     日常喜欢的活动：
-    在此活动中您会佩戴我们的设备吗
+    在此活动中您会佩戴我们的设备吗 -->
 
   </div>
 </template>
 
 <script>
-import { 
-  Input, 
-  // Button,
-  Form,
-  FormItem,
-  Radio,
-  RadioGroup,
-} from 'element-ui'
+import state from '../store/index.js'
+import axios from 'axios'
+import config from '../config.js'
 
 export default {
-  components: {
-    "el-input": Input,
-    // "el-button": Button,
-    Form,
-    Radio,
-    RadioGroup,
-    FormItem,
-  },
   data() {
     return {
-      ruleForm: {
+      state,
+      signInForm: {
         username: '',
         password: '',
-        checkPassword: '',
-        idNumber: '',
-        name: '',
-        sex: '男',
+        gender: '男',
         age: '',
-        weight: '', //kg
+        name: '',
         height: '', //cm
-        phoneNumber: '',
-        QQNumber: 0,
-        weChatNumber: 0,
+        weight: '', //kg
+        phone: '',
+        identity: 'patient',
+
+        checkPassword: '',
+        // idNumber: '',
+        // QQNumber: 0,
+        // weChatNumber: 0,
       },
       rules: {
         username: [
           { required: true, message: '请输入账号', trigger: 'blur' },
-          { type : 'number', message: '数字', trigger: 'blur'},
-          // { min: 6, max: 12, message: '长度在 6 到 12 个数字', trigger: 'blur' }
+          { type : 'string', message: '数字', trigger: 'blur'},
+          { min: 6, max: 12, message: '长度在 6 到 16 个字符或者数字', trigger: 'blur' }
         ],
         password: [
           { validator: (rule, value, callback) => {
             if (value === '') {
               callback(new Error('请输入密码'));
             } else {
-              if (this.ruleForm.checkPassword !== '') {
-                this.$refs.ruleForm.validateField('checkPassword');
+              if (this.signInForm.checkPassword !== '') {
+                this.$refs.signInForm.validateField('checkPassword');
               }
               callback();
             }
@@ -125,7 +116,7 @@ export default {
           { validator: (rule, value, callback) => {
             if (value === '') {
               callback(new Error('请再次输入密码'));
-            } else if (value !== this.ruleForm.password) {
+            } else if (value !== this.signInForm.password) {
               callback(new Error('两次输入密码不一致!'));
             } else {
               callback();
@@ -150,21 +141,61 @@ export default {
   created() {
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+    submitForm() {
+      this.$refs['signInForm'].validate(valid => {
         if (valid) {
-          alert('提交数据', JSON.stringify(this.ruleForm))
+          let formdata = new FormData()
+
+          Object.keys(this.signInForm).forEach(item => {
+            if(item === 'identity') {
+              formdata.append(item, this.signInForm[item] === 'doctor' ? true : false)
+              return 
+            }
+            if(item === 'gender') {
+              formdata.append(item, this.signInForm[item] === '男' ? false : true)
+              return 
+            }
+            if(item === 'checkPassword') return 
+            formdata.append(item, this.signInForm[item])
+          })
+          axios.post(`${ config.host }/registerRequest`, formdata)
+          .then(mes => {
+            if (mes.data.success === 'true') {
+              this.handleSuccess()
+            }
+          }, e => {
+            this.handleError(e)
+          })
         } else {
-          alert('error submit!!');
           return false;
         }
       });
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+    handleSuccess() {
+      this.$message({
+        message: '注册成功',
+        type: 'success'
+      });
+      this.$refs['signInForm'].resetFields();
+      this.$router.push('/')
+    },
+    handleError(e) {
+      this.$message({
+        message: e,
+        type: 'error'
+      });
+    },
+    resetForm() {
+      this.$refs['signInForm'].resetFields();
+    },
+    handleSelect(mes){
+      this.signInForm.identity = mes
     }
-
   },
-  
 }
 </script>
+
+
+<style>
+/* @TPDO 样式调整 */
+</style>
