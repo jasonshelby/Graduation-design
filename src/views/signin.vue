@@ -176,7 +176,7 @@ export default {
         message: '注册成功',
         type: 'success'
       });
-      this.$refs['signInForm'].resetFields();
+      this.resetForm()
       this.$router.push('/')
     },
     handleError(e) {

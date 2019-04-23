@@ -51,7 +51,6 @@ export default {
     return {
       state,
       loginInForm: {
-        userType: 'doctor',
         username: '',
         password: '',
       }
@@ -69,13 +68,10 @@ export default {
       Object.keys(this.loginInForm).forEach(item => {
         formdata.append(item, this.loginInForm[item])
       })
-      // formdata.append('username', this.loginInForm.username);
-      // formdata.append('password', this.loginInForm.password);
       axios.post(`${ config.host }/loginRequest`, formdata).then(mes => {
         let { data } = mes
         if (data.success === "true") {
-          console.log(data)
-          this.handleSuccess(data)
+          this.handleSuccess(JSON.parse(data.message))
         } else if (data.success === "false") {
           this.handleError(data.message)
         }
@@ -83,14 +79,16 @@ export default {
         this.handleError(e)
       })
     },
-    handleSuccess() {
+    handleSuccess(data) {
+      // console.log(data)
+      let { identity, id } = data
       this.$message({
         message: '登陆成功',
         type: 'success'
       });
       state.isOnline = true
       
-      this.$router.push(`/${this.loginInForm.userType}`)
+      this.$router.push(`/${identity ? 'doctor' : 'patient'}/${id}`)
     },
     handleError(mes) {
       if (mes === "nonexistence") {

@@ -36,7 +36,7 @@ let router = new Router({
       component: () => import('./views/doctor.vue')
     },
     {
-      path: '/patient',
+      path: '/patient/:id',
       name: 'patient',
       component: () => import('./views/patient.vue')
     },

@@ -1,15 +1,23 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">about</router-link> |
-      <router-link to="/patient">patient</router-link> |
-      <!-- @TODO 右上角登陆状态是否登陆 
-
+      <el-menu 
+        class="el-menu-demo" 
+        mode="horizontal"
+        default-active='/'
+        :router="true"
+        background-color="#545c64"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+      >
+        <el-menu-item index="/">Home</el-menu-item>
+        <el-menu-item index="/about">about</el-menu-item>
+        <el-menu-item index="/patient/:id">patient</el-menu-item>
+        <el-menu-item index="/signin">signin</el-menu-item>
+        <el-menu-item index="/doctor">doctor</el-menu-item>
+      </el-menu>
+      <!-- @TODO 右上角登陆状态是否登陆 -->
       
-      @TODO 导航栏菜单化-->
-      <router-link to="/signin">signin</router-link> |
-      <router-link to="/doctor">doctor</router-link>
     </div>
     <!-- @TODO需求整理
     最终的导航栏有github地址，最好有在线文档，患者有查看档案功能
@@ -26,6 +34,6 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin: 0 100px;
 }
 </style>
