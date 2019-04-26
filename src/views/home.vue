@@ -71,7 +71,7 @@ export default {
       axios.post(`${ config.host }/loginRequest`, formdata).then(mes => {
         let { data } = mes
         if (data.success === "true") {
-          this.handleSuccess(JSON.parse(data.message))
+          this.handleSuccess.call(this, JSON.parse(data.message))
         } else if (data.success === "false") {
           this.handleError(data.message)
         }
@@ -87,6 +87,9 @@ export default {
         type: 'success'
       });
       state.isOnline = true
+      // console.log(this.prototype)
+      // this.prototype.online = true
+
       
       this.$router.push(`/${identity ? 'doctor' : 'patient'}/${id}`)
     },

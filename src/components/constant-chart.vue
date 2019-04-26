@@ -5,124 +5,139 @@
 </template>
 
 <script type="module">
-  import echarts from 'echarts'
-  import axios from 'axios'
-  import config from '../config.js'
-  // import user from '../store/user.js'
-  // const { data } = user
 
-
-  export default {
-    data() {
-      return { 
-        constantChart: null,
-        constantData: [1,2,3,4,5],
-      };
-    },
-    created() {
-      let { id } = this.$route.params
-      console.log('id:', id)
-    }, 
-    mounted() {
-      this.constantChart = echarts.init(document.getElementById('main'))
-      setInterval(()=> {
-        for (var i = 0; i < 5; i++) {
-          this.constantData.shift();
-          this.constantData.push(randomData());
-        }
-
-        this.constantChart.setOption({
-          series: [{
-            data: data
-          }]
-        });
-      }, 1000);
-        function randomData() {
-          now = new Date(+now + oneDay);
-          value = value + Math.random() * 21 - 10;
-          return {
-            name: now.toString(),
-            value: [
-              [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
-              Math.round(value)
-            ]
-          }
-        }
-
-var data = [];
-var now = +new Date(1997, 9, 3);
-var oneDay = 24 * 3600 * 1000;
+import echarts from 'echarts'
+import axios from 'axios'
+import config from '../config.js'
+// import user from '../store/user.js'
+// const { data } = user
+var now = +new Date();
+var oneHour = 1000;
 var value = Math.random() * 1000;
-for (var i = 0; i < 1000; i++) {
-    data.push(randomData());
+
+function randomData() {
+    now = new Date(+ now + oneHour);
+    value = value + Math.random() * 21 - 10;
+    return {
+      value:[
+        [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
+        Math.round(value)
+      ]
+    }
+    // return {
+    //     name: now.toString(),
+    //     value: [
+    //         // [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
+    //         [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
+    //         Math.round(value)
+    //     ]
+    // }
 }
 
-this.constantChart.setOption({
-    title: {
-        text: '动态数据 + 时间坐标轴'
-    },
-    tooltip: {
-        trigger: 'axis',
-        formatter: function (params) {
-            params = params[0];
-            var date = new Date(params.name);
-            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
-        },
-        axisPointer: {
-            animation: false
-        }
-    },
-    xAxis: {
-        type: 'time',
+export default {
+  data() {
+    return { 
+      // constantChart: null,
+      constantData: [],
+    };
+  },
+  created() {
+    let { id } = this.$route.params
+    // console.log('id:', id)
+  }, 
+  mounted() {
+    var data = [];
+
+    let chart = echarts.init(document.getElementById('main'))
+    setInterval(()=> {
+      for (var i = 0; i < 5; i++) {
+        data.shift();
+        data.push(randomData());
+      }
+      // console.table(data[0])
+      chart.setOption({
+        series: [{
+          data: data
+        }]
+      });
+    }, 1000);
+
+
+    for (var i = 0; i < 3600; i++) {
+      data.push(randomData());
+    }
+
+
+    chart.setOption({
+      title: {
+          text: '实时心跳数据'
+      },
+      // tooltip: {
+      //     trigger: 'axis',
+      //     formatter: function (params) {
+      //         params = params[0];
+      //         var date = new Date(params.name);
+      //         console.log(date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1])
+      //         return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+      //     },
+      //     axisPointer: {
+      //         animation: false
+      //     }
+      // },
+      xAxis: {
+        // type: 'time',
+        data: data.map(item => item.value[0]),
         splitLine: {
-            show: false
+          show: false
         }
-    },
-    yAxis: {
+      },
+      yAxis: {
         type: 'value',
+        data: data.map(item => item.value[1]),
+        // minInterval: 1,
         boundaryGap: [0, '100%'],
         splitLine: {
             show: false
         }
-    },
-    series: [{
-        name: '模拟数据',
+      },
+      series: [{
+        name: '实时心跳数据',
         type: 'line',
         showSymbol: false,
         hoverAnimation: false,
-        data: data
-    }]
-})
+        // data: data
+      }]
+    })
+  },
+  methods: {
+    download() {
+      axios.get(`${ config.host }/downloadRequest`, {
+        params: {
+          id: 17,
+          startTime: Date.now()-20,
+          endTime: Date.now()
+        }
+      })
+      .then(mes => {
+        let { data } = mes
+        if (data.success === "true") {
+          // console.log(data)
+          this.handleSuccess(data)
+        } else if (data.success === "false") {
+          this.handleError(data.message)
+        }
+      }, e => {
+        this.handleError(e)
+      })
     },
-    methods: {
-      download() {
-        axios.get(`${ config.host }/downloadRequest`, {
-          params: {
-            id: 17,
-            startTime: Date.now()-20,
-            endTime: Date.now()
-          }
-        })
-        .then(mes => {
-          let { data } = mes
-          if (data.success === "true") {
-            console.log(data)
-            this.handleSuccess(data)
-          } else if (data.success === "false") {
-            this.handleError(data.message)
-          }
-        }, e => {
-          this.handleError(e)
-        })
-      },
-      handleSuccess(){
-        console.log(1)
-      },
-      handleError() {
-        console.log(2)
-      }
+    handleSuccess(){
+      // console.log(1)
+    },
+    handleError() {
+      // console.log(2)
     }
   }
+}
 </script>
 
 <style>

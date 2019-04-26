@@ -5,11 +5,8 @@
       <el-menu-item index="3">数据B</el-menu-item>
     </el-menu> -->
     <ConstantChart></ConstantChart>
-    <!-- @TODO 路由传参
-    patient/:id
-      用户详情
 
-    @TODO menu选项卡 -->
+    <!-- @TODO menu选项卡 -->
   </div>
 
 </template>

@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/home.vue'
+import state from './store/index.js'
+
 
 Vue.use(Router)
-
-// @TODO 登陆权鉴  路由守卫
 
 let router = new Router({
   mode: 'history',
@@ -44,15 +44,14 @@ let router = new Router({
 })
 // console.log(router.beforeEach)
 
-// router.beforeEach((to, from, next) => {
-  
-
-//   if(to.matched.length == 0) {
-//     console.log(222)
-//     next('/about')
-//   }
-//   // ...
-// })
+router.beforeEach((to, from, next) => {
+  if (to.name === 'patient' || to.name === 'doctor') {
+    if (!state.isOnline) {
+      next('/about')
+    }
+  }
+  next()
+})
 
 
 
