@@ -2,8 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/home.vue'
 import state from './store/index.js'
-
-
 Vue.use(Router)
 
 let router = new Router({
@@ -26,6 +24,11 @@ let router = new Router({
       component: () => import('./views/about.vue')
     },
     {
+      path: '/login',
+      name: 'login',
+      component: () => import('./views/login.vue')
+    },
+    {
       path: '/signin',
       name: 'signin',
       component: () => import('./views/signin.vue')
@@ -42,17 +45,14 @@ let router = new Router({
     },
   ]
 })
-// console.log(router.beforeEach)
 
 router.beforeEach((to, from, next) => {
-  if (to.name === 'patient' || to.name === 'doctor') {
-    if (!state.isOnline) {
-      next('/about')
-    }
+  let isOnline = state.isOnline || sessionStorage.isOnline === 'true'
+  if ((to.name === 'patient' || to.name === 'doctor') && !isOnline) {
+    next('/about')
+  } else {
+    next()
   }
-  next()
 })
-
-
 
 export default router

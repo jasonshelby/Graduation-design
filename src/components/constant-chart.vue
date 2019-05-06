@@ -9,36 +9,17 @@
 import echarts from 'echarts'
 import axios from 'axios'
 import config from '../config.js'
+import { clearInterval } from 'timers';
 // import user from '../store/user.js'
 // const { data } = user
-var now = +new Date();
-var oneHour = 1000;
-var value = Math.random() * 1000;
 
-function randomData() {
-    now = new Date(+ now + oneHour);
-    value = value + Math.random() * 21 - 10;
-    return {
-      value:[
-        [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
-        Math.round(value)
-      ]
-    }
-    // return {
-    //     name: now.toString(),
-    //     value: [
-    //         // [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
-    //         [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
-    //         Math.round(value)
-    //     ]
-    // }
-}
+
 
 export default {
   data() {
     return { 
-      // constantChart: null,
       constantData: [],
+      timer: null,
     };
   },
   created() {
@@ -47,68 +28,85 @@ export default {
   }, 
   mounted() {
     var data = [];
+    var now = +new Date();
+    var oneSecond = 1000;
+    var value = Math.random() * 10;
 
+    function randomData() {
+        now = new Date(+now + oneSecond);
+        value = value + Math.random() * 21 - 10;
+        return {
+            name: now.toString(),
+            value: [
+                now,
+                // [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
+                Math.round(value)
+            ]
+        }
+    }
     let chart = echarts.init(document.getElementById('main'))
-    setInterval(()=> {
-      for (var i = 0; i < 5; i++) {
-        data.shift();
+    // if (data.length === 0) {
+      for (var i = 0; i < 300; i++) {
         data.push(randomData());
       }
-      // console.table(data[0])
-      chart.setOption({
-        series: [{
-          data: data
-        }]
-      });
-    }, 1000);
-
-
-    for (var i = 0; i < 3600; i++) {
-      data.push(randomData());
-    }
-
+    // }
+    // if(!this.timer) {
+      this.timer = setInterval(function () {
+        data.shift();
+        data.push(randomData());
+        chart.setOption({
+          series: [{
+            data: data
+          }]
+        });
+      }, 1000);
+    // }
+    
 
     chart.setOption({
       title: {
-          text: '实时心跳数据'
+          text: '动态数据 + 时间坐标轴'
       },
-      // tooltip: {
-      //     trigger: 'axis',
-      //     formatter: function (params) {
-      //         params = params[0];
-      //         var date = new Date(params.name);
-      //         console.log(date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1])
-      //         return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
-      //     },
-      //     axisPointer: {
-      //         animation: false
-      //     }
-      // },
+      tooltip: {
+          trigger: 'axis',
+          formatter: function (params) {
+              params = params[0];
+              var date = new Date(params.name);
+              return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+          },
+          axisPointer: {
+              animation: false
+          }
+      },
       xAxis: {
-        // type: 'time',
-        data: data.map(item => item.value[0]),
-        splitLine: {
-          show: false
-        }
+          type: 'time',
+          interval: 60 * 1000,
+          splitLine: {
+              show: false
+          }
       },
       yAxis: {
-        type: 'value',
-        data: data.map(item => item.value[1]),
-        // minInterval: 1,
-        boundaryGap: [0, '100%'],
-        splitLine: {
-            show: false
-        }
+          type: 'value',
+          boundaryGap: [0, '100%'],
+          splitLine: {
+              show: false
+          }
       },
       series: [{
-        name: '实时心跳数据',
-        type: 'line',
-        showSymbol: false,
-        hoverAnimation: false,
-        // data: data
+          name: '模拟数据',
+          type: 'line',
+          showSymbol: false,
+          hoverAnimation: false,
+          data: data
       }]
     })
   },
+  // destroyed() {
+  //   console.log('des')
+  //   if(this.timer){
+  //     clearInterval(this.timer)
+  //   }
+  // },
   methods: {
     download() {
       axios.get(`${ config.host }/downloadRequest`, {
@@ -143,6 +141,7 @@ export default {
 <style>
 #main{
   height: 400px;
+  /* width: 604px; */
 }
 
 </style>

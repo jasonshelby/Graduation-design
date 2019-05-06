@@ -1,39 +1,92 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <el-menu 
-        class="el-menu-demo" 
-        mode="horizontal"
-        default-active='/'
-        :router="true"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b"
-      >
-        <el-menu-item index="/">Home</el-menu-item>
-        <el-menu-item index="/about">about</el-menu-item>
-        <el-menu-item index="/patient/:id">patient</el-menu-item>
-        <el-menu-item index="/signin">signin</el-menu-item>
-        <el-menu-item index="/doctor">doctor</el-menu-item>
-      </el-menu>
-      <!-- @TODO 右上角登陆状态是否登陆 -->
-      
-    </div>
-    <!-- @TODO需求整理
-    最终的导航栏有github地址，最好有在线文档，患者有查看档案功能
-    首页可能要做个轮播，介绍一下项目
-    但是还是别给自己添加需求了，emmmmm -->
-    <router-view/>
+    <el-menu 
+      class="menu-wrapper" 
+      mode="horizontal"
+      default-active='/'
+      :router="true"
+      background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#ffd04b"
+    >
+      <nav class='nav-left'>
+        <el-menu-item index="/" class="item-left">脉搏波监控系统</el-menu-item>
+      </nav>
+
+      <!-- @TODO 无网络连接 -->
+      <!-- @TODO 防止用户请求到其他用户的信息 -->
+
+      <nav class='nav-right'>
+        <el-menu-item v-if="state.isOnline" @click="quit" class="item-right">
+          退出登陆({{state.name}})
+        </el-menu-item>
+        <el-menu-item v-else index="/signin" class="item-right">注册</el-menu-item>
+        <el-menu-item 
+          class="item-right"
+          v-if="state.isOnline" 
+          :index="`/${state.identity ? 'doctor' : 'patient'}/${ state.id }`">
+          个人主页
+        </el-menu-item>
+        <el-menu-item v-else index="/login" class="item-right">登陆</el-menu-item>
+      </nav>
+    </el-menu>
+    <router-view id="app-body"/>
   </div>
 </template>
 
+<script>
+import state from './store/index.js'
+export default {
+  // @TODO 登陆项的类型检查
+  data() {
+    return {
+      state,
+    }
+  },
+  created() {
+    // 根据缓存自动登陆
+    if(sessionStorage.isOnline === 'true') {
+      let data = JSON.parse(sessionStorage.user)
+      state.isOnline = true
+      Object.keys(data).forEach(item => {
+        state[item] = data[item]
+      })
+    }
+  },
+  methods: {
+    quit() {
+      state.isOnline = false
+    },
+    
+  }
+}
+</script>
+
 <style>
+*{
+  margin: 0px;
+  padding: 0px;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+#app-body{
   margin: 0 100px;
+}
+.nav-left {
+  margin-left: 100px;
+}
+#app .menu-wrapper .item-left{
+  float: left;
+}
+.nav-right {
+  margin-right: 100px;
+}
+#app .menu-wrapper .item-right{
+  float: right;
 }
 </style>

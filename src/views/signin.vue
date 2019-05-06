@@ -57,15 +57,8 @@
         <el-button @click="resetForm">重置</el-button>
       </el-form-item>
     </el-form>
-    <!-- @TODO照片
-    
-    @TODO必填标识 -->
-
+    <!-- TODO照片 -->
     <br>
-    <!-- @TODO选填：
-    日常喜欢的活动：
-    在此活动中您会佩戴我们的设备吗 -->
-
   </div>
 </template>
 

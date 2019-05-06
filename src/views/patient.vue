@@ -43,5 +43,20 @@
 #main{
   height: 400px;
 }
+#footer {
+  overflow: hidden;
+  position: fixed;
+  z-index: -1;
+  height: 371px;
+  background: none repeat scroll 0 0 rgb(84, 92, 100);
+  bottom: 0;
+  left: 0;
+  display: block;
+  padding: 2rem 0;
+  width: 100%;
+  color: #f1f1f1;
+  display: flex;
+  flex-direction: column;
+}
 
 </style>
