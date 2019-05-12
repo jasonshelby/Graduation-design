@@ -65,7 +65,6 @@
 <script>
 import state from '../store/index.js'
 import axios from 'axios'
-import config from '../config.js'
 
 export default {
   data() {
@@ -151,7 +150,7 @@ export default {
             if(item === 'checkPassword') return 
             formdata.append(item, this.signInForm[item])
           })
-          axios.post(`${ config.host }/registerRequest`, formdata)
+          axios.post(`${ this.host }/registerRequest`, formdata)
           .then(mes => {
             if (mes.data.success === 'true') {
               this.handleSuccess()

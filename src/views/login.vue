@@ -29,7 +29,6 @@
 <script>
 import state from '../store/index.js'
 import axios from 'axios'
-import config from '../config.js'
 // @TODO 将登陆信息同步到缓存
 
 export default {
@@ -43,6 +42,7 @@ export default {
       }
     }
   },
+  // mixins: [],
   created() {
     if (sessionStorage.isOnline === 'true') {
       // state.isOnline = true
@@ -58,7 +58,7 @@ export default {
       Object.keys(this.loginInForm).forEach(item => {
         formdata.append(item, this.loginInForm[item])
       })
-      axios.post(`${ config.host }/loginRequest`, formdata).then(mes => {
+      axios.post(`${ this.host }/loginRequest`, formdata).then(mes => {
         let { data } = mes
         if (data.success === "true") {
           this.handleSuccess.call(this, JSON.parse(data.message))

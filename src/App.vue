@@ -36,6 +36,7 @@
 
 <script>
 import state from './store/index.js'
+
 export default {
   // @TODO 登陆项的类型检查
   data() {
@@ -56,8 +57,9 @@ export default {
   methods: {
     quit() {
       state.isOnline = false
-    },
-    
+      sessionStorage.isOnline = ''
+      sessionStorage.user = ''
+    }
   }
 }
 </script>
