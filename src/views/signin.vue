@@ -6,16 +6,17 @@
       ref="signInForm" 
       :model="signInForm" 
       :rules="rules" 
+      label-position="left"
+      label-width="70px"
       :hide-required-asterisk="true"
+      class="siginBox"
     >
-      <el-menu 
-          :default-active="signInForm.identity" 
-          class="Menu-demo" mode="horizontal" 
-          @select="handleSelect"
-        >
-        <el-menu-item index="patient" class="menu-item">患者</el-menu-item>
-        <el-menu-item index="doctor" class="menu-item">医师</el-menu-item>
-      </el-menu>
+      <el-form-item label="身份" prop="identity">
+        <el-radio-group v-model="signInForm.identity">
+          <el-radio label="患者"></el-radio>
+          <el-radio label="医师"></el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item label="账户" prop="username">
         <el-input v-model.number="signInForm.username" placeholder="请输入账户"></el-input>
       </el-form-item>
@@ -42,11 +43,11 @@
       <el-form-item label="年龄" prop="age">
         <el-input v-model.number="signInForm.age"></el-input>
       </el-form-item>
-      <el-form-item label="身高" prop="height" >
-        <el-input v-model.number="signInForm.height"></el-input>cm
+      <el-form-item label="身高(cm)" prop="height" >
+        <el-input v-model.number="signInForm.height"></el-input>
       </el-form-item>
-      <el-form-item label="体重" prop="weight" >
-        <el-input v-model.number="signInForm.weight"></el-input>kg
+      <el-form-item label="体重(kg)" prop="weight" >
+        <el-input v-model.number="signInForm.weight"></el-input>
       </el-form-item>
       <el-form-item label="电话" prop="phone" >
         <el-input v-model.number="signInForm.phone"></el-input>
@@ -79,8 +80,7 @@ export default {
         height: '', //cm
         weight: '', //kg
         phone: '',
-        identity: 'patient',
-
+        identity: '患者',
         checkPassword: '',
         // idNumber: '',
         // QQNumber: 0,
@@ -190,4 +190,21 @@ export default {
 
 <style>
 /* @TPDO 样式调整 */
+.siginBox{
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  padding: 15px 40px 30px;
+  margin: 0 auto;
+  width: 450px;
+}
+
+.el-form-item__content{
+  margin-top: 20px;
+  margin: auto;
+}
+
+.home-button{
+  margin-top: 15px;
+  box-sizing: border-box;
+  width: 50%;
+}
 </style>

@@ -3,19 +3,19 @@
     <!-- {{state}} -->
     <!-- @TODO  CSS 卡片样式 -->
     
-    <div>{{ state.name }}，你好</div>
+    <div>{{ state.identity ? state.name.substring(0, 1) + '医生' : state.name }}，你好</div>
     <div>用户名：{{ state.username }}</div>
     <div>年龄：{{ state.age }}</div>
     <div>身高：{{ state.height }}</div>
     <div>体重：{{ state.weight }}</div>
     <div>联系电话：{{ state.phone }}</div>
     <div class="line"></div>
-    <span v-if="!state.identity">
+    <!-- <span v-if="!state.identity">
       您的健康数据如下所示
     </span>
     <span v-else>
       请在这里处理患者们的信息
-    </span>
+    </span> -->
   </div>
 </template>
 
@@ -49,6 +49,7 @@ export default {
   width: 300px;
   height: 30px;
   line-height: 30px;
+  text-align: left;
 }
 
 

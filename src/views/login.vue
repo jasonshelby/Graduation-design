@@ -4,6 +4,7 @@
     <el-form
       v-if="!state.isOnline"
       ref="loginInForm" 
+      label-position="left"
       :model="loginInForm" 
       class="loginBox"
     >
@@ -111,10 +112,10 @@ export default {
 }
 
 .loginBox{
-  float: right;
-  right: 0px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  padding: 15px 40px 30px;
+  margin: 0 auto;
   width: 334px;
-  height: 387px;
 }
 
 .el-form-item__content{

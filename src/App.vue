@@ -77,12 +77,15 @@ export default {
   color: #2c3e50;
 }
 #app-body{
-  margin: 0 100px;
+  width: 1000px;
+  min-height: 500px;
+  margin: 0 auto;
 }
 .nav-left {
   margin-left: 100px;
 }
 #app .menu-wrapper .item-left{
+  font-size: 17px;
   float: left;
 }
 .nav-right {

@@ -1,9 +1,7 @@
 <template>
   <div class="patient">
-    <UserCard></UserCard>
-    
-    <!--  TODO 按需展示图表 -->
-     <el-menu
+    <!-- <UserCard></UserCard> -->
+    <el-menu
       :default-active="activeChart"
       class="menu"
       @select="chartName => activeChart = chartName"
@@ -28,42 +26,19 @@
   import HistoryChart from '../components/history-chart'
   import UserCard from '../components/user-card'
 
-  // import user from '../store/user.js'
-  // const { data } = user
   // @TODO 图表部分的包动态加载
-
   export default {
     data() {
       return { 
-        activeIndex: '1',
-        activeIndex2: '1',
-        activeChart: 'ConstantChart'
+        activeChart: 'HistoryChart'
       };
-    },
-    props: {
-      val:{
-        type: Number,
-      }
     },
     components: {
       UserCard,
       ConstantChart,
       HistoryChart,
     },
-    created() {
-      console.log(this.plus)
-      // this.$emit('plus', [2])
-    },
     methods:{
-      handleSuccess(){
-        console.log(1)
-      },
-      handleError() {
-        console.log(2)
-      },
-      func(n) {
-        this.$emit('plus', n)
-      }
     }
   }
 </script>
@@ -80,3 +55,58 @@
 }
 
 </style>
+
+public class SecondActivity extends AppCompatActivity {
+    private TextView tv;
+    private WebView mWebView;
+ 
+//    @SuppressLint("JavascriptInterface")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_second);
+ 
+        tv = findViewById(R.id.tv);
+ 
+        mWebView = findViewById(R.id.webview);
+ 
+        String name = getIntent().getStringExtra("name");
+        if (!TextUtils.isEmpty(name)){
+            tv.setText(name);
+        }
+ 
+        WebSettings webSettings = mWebView.getSettings();
+        webSettings.setSavePassword(false);
+        webSettings.setSaveFormData(false);
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setSupportZoom(false);
+ 
+        mWebView.setWebChromeClient(new MyWebChromeClient());
+ 
+//        mWebView.addJavascriptInterface(new DemoJavaScriptInterface(), "demo");
+ 
+        mWebView.loadUrl("http://wechat-dev.cb3dp.com/testwebview2.html");
+ 
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mWebView.loadUrl("javascript:javaCall('fasff')");
+            }
+        });
+    }
+ 
+    /**
+     * Provides a hook for calling "alert" from javascript. Useful for
+     * debugging your javascript.
+     */
+    final class MyWebChromeClient extends WebChromeClient {
+        @Override
+        public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+            Log.d("TAG", message);
+            result.confirm();
+ 
+            tv.setText(message);
+            return true;
+        }
+    }
+ }

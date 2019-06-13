@@ -8,6 +8,8 @@
 
 import echarts from 'echarts'
 import axios from 'axios'
+import { baseChartOptions } from '../units/base-chart-data.js'
+
 // import user from '../store/user.js'
 // const { data } = user
 
@@ -62,42 +64,13 @@ export default {
     
 
     chart.setOption({
-      title: {
-          text: '实时脉搏数据'
-      },
-      tooltip: {
-          trigger: 'axis',
-          formatter: function (params) {
-              params = params[0];
-              var date = new Date(params.name);
-              return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
-          },
-          axisPointer: {
-              animation: false
-          }
-      },
-      xAxis: {
-          type: 'time',
-          interval: 60 * 1000,
-          splitLine: {
-              show: false
-          }
-      },
-      yAxis: {
-          type: 'value',
-          max: 200,
-          min: 50,
-          boundaryGap: [0, '100%'],
-          splitLine: {
-              show: false
-          }
-      },
+      ...baseChartOptions,
       series: [{
-          name: '模拟数据',
-          type: 'line',
-          showSymbol: false,
-          hoverAnimation: false,
-          data: data
+        name: '模拟数据',
+        type: 'line',
+        showSymbol: false,
+        hoverAnimation: false,
+        data: data
       }]
     })
   },

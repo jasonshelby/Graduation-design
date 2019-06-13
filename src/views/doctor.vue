@@ -1,6 +1,8 @@
 
 <template>
   <div class="home">
+    <UserCard></UserCard>
+
     全部用户列表
 
 
@@ -17,3 +19,15 @@
 
   </div>
 </template>
+
+<script>
+  import UserCard from '../components/user-card'
+
+export default {
+  components: {
+    UserCard,
+  },
+
+}
+</script>
+
