@@ -1,6 +1,6 @@
 
 <template>
-  <div class="home">
+  <div class="login">
     <el-form
       v-if="!state.isOnline"
       ref="loginInForm" 
@@ -83,6 +83,7 @@ export default {
       sessionStorage.user = JSON.stringify(data)
       state.isOnline = true
       this.$router.push(`/${identity ? 'doctor' : 'patient'}/${id}`)
+      console.log(state)
     },
     handleError(mes) {
       if (mes === "nonexistence") {
@@ -98,7 +99,7 @@ export default {
 </script>
 
 <style>
-.home{
+.login{
   min-width: 960px;
   width: 800px;
   padding-top: 40px;
@@ -107,23 +108,23 @@ export default {
   margin: auto;
 }
 
-.menu-item{
+.login .menu-item{
   width: 50%;
 }
 
-.loginBox{
+.login .loginBox{
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
   padding: 15px 40px 30px;
   margin: 0 auto;
   width: 334px;
 }
 
-.el-form-item__content{
+.login .el-form-item__content{
   margin-top: 20px;
   margin: auto;
 }
 
-.home-button{
+.login .home-button{
   margin-top: 15px;
   box-sizing: border-box;
   width: 50%;

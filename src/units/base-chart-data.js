@@ -35,14 +35,14 @@ export const baseChartOptions = {
 var now = +new Date() - 60 * 5 * 1000;
 var oneSecond = 5;
 
-export function randomData(mockData) {
+export function randomData(mockData, index) {
   now = new Date(+now + oneSecond);
   return {
     name: now.toString(),
     value: [
       now,
       // Number(String(mockData.pop()).substring(4)) + 300 
-      -mockData.shift()
-    ]
+      -mockData[index]
+    ],
   }
 }

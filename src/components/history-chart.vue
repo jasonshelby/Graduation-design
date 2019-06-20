@@ -25,7 +25,7 @@
 <script type="module">
 
 import echarts from 'echarts'
-import axios from 'axios'
+// import axios from 'axios'
 import { baseChartOptions, randomData } from '../units/base-chart-data.js'
 import user from '../store/user.js'
 const { data: mockData } = user
@@ -34,8 +34,8 @@ export default {
   data() {
     return {
       data:[],
-      start: '',
-      end: '',
+      start: '0',
+      end: '1000',
       id: this.$route.params.id,
       chart: null,
     };
@@ -44,10 +44,11 @@ export default {
     this.download()
   },
   mounted() {
+    let [start, end] = [Number(this.start), Number(this.end)]
     this.chart = echarts.init(document.getElementById('main'))
-    
-    for (var i = 0; i < 1000; i++) {
-      this.data.push(randomData(mockData));
+    for (var i = start; i < end; i++) {
+      let data = randomData(mockData, i)
+      this.data.push(data);
     }
 
     this.chart.setOption({
@@ -69,28 +70,34 @@ export default {
         }],
       })
     },
-    querydata(start = this.start, end = this.end) {
-      console.log('查询', start, end)
+    querydata() {
+      let [start, end] = [Number(this.start), Number(this.end)]
+      this.data = []
+      for (var i =start; i < end; i++) {
+        let data = randomData(mockData, i)
+        this.data.push(data);
+      }
+      this.setChart(this.data)
     },
     download() {
-      axios.get(`${ this.host }/downloadRequest`, {
-        params: {
-          id: this.id,
-          startTime: Date.now()-20,
-          endTime: Date.now()
-        }
-      })
-      .then(mes => {
-        let { data } = mes
-        if (data.success === "true") {
-          // console.log(data)
-          this.handleSuccess(data)
-        } else if (data.success === "false") {
-          this.handleError(data.message)
-        }
-      }, e => {
-        this.handleError(e)
-      })
+      // axios.get(`${ this.host }/downloadRequest`, {
+      //   params: {
+      //     id: this.id,
+      //     startTime: Date.now()-20,
+      //     endTime: Date.now()
+      //   }
+      // })
+      // .then(mes => {
+      //   let { data } = mes
+      //   if (data.success === "true") {
+      //     // console.log(data)
+      //     this.handleSuccess(data)
+      //   } else if (data.success === "false") {
+      //     this.handleError(data.message)
+      //   }
+      // }, e => {
+      //   this.handleError(e)
+      // })
     },
     handleSuccess(...v){
       console.log(...v)

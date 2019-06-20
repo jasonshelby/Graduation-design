@@ -5,95 +5,79 @@
 </template>
 
 <script type="module">
-
+// import axios from 'axios'
 import echarts from 'echarts'
-import axios from 'axios'
-import { baseChartOptions } from '../units/base-chart-data.js'
-
-// import user from '../store/user.js'
-// const { data } = user
+import { baseChartOptions, randomData } from '../units/base-chart-data.js'
+import user from '../store/user.js'
+const { data: mockData } = user
 
 export default {
   data() {
-    return { 
-      constantData: [],
+    return {
+      data:[],
       timer: null,
       id: this.$route.params.id,
-      kk: this.val
+      chart: null,
     };
   },
-  props: {
-    val:{
-      type: Number,
-    }
-  },
   created() {
-    // this.$emit(this.plus, 2)
-    console.log('id:', this.id)
+    // console.log('id:', this.id)
   }, 
   mounted() {
-    var data = [];
-    var now = +new Date() - 60 * 5 * 1000;
-    var oneSecond = 1000;
-    var value = Math.random() * 10;
+    this.chart = echarts.init(document.getElementById('main'))
 
-    function randomData() {
-      now = new Date(+now + oneSecond);
-      value = value + Math.random() * 21 - 10;
-      return {
-        name: now.toString(),
-        value: [
-          now,
-          Math.round(value)
-        ]
-      }
+    for (var i = 0; i < 1200; i++) {
+      let data = randomData(mockData, i)
+      this.data.push(data);
     }
-    let chart = echarts.init(document.getElementById('main'))
-    for (var i = 0; i < 300; i++) {
-      data.push(randomData());
-    }
-    this.timer = setInterval(function () {
-      data.shift();
-      data.push(randomData());
-      chart.setOption({
-        series: [{
-          data: data
-        }]
-      });
-    }, 1000);
-    
 
-    chart.setOption({
+    this.chart.setOption({
       ...baseChartOptions,
       series: [{
         name: '模拟数据',
         type: 'line',
         showSymbol: false,
         hoverAnimation: false,
-        data: data
-      }]
+        data: this.data
+      }],
     })
+
+    this.timer = setInterval(() => {
+      for (var j = 0; j < 200; j++) {
+        let data = randomData(mockData, i++)
+        this.data.push(data);
+        this.data.shift();
+      }
+      this.setChart(this.data);
+    }, 1000);
   },
   methods: {
+    setChart(data) {
+      this.chart.setOption({
+        series: [{
+          data,
+        }],
+      })
+    },
     download() {
-      axios.get(`${ this.host }/downloadRequest`, {
-        params: {
-          id: this.id,
-          startTime: Date.now()-20,
-          endTime: Date.now()
-        }
-      })
-      .then(mes => {
-        let { data } = mes
-        if (data.success === "true") {
-          // console.log(data)
-          this.handleSuccess(data)
-        } else if (data.success === "false") {
-          this.handleError(data.message)
-        }
-      }, e => {
-        this.handleError(e)
-      })
+      // axios.get(`${ this.host }/downloadRequest`, {
+      //   params: {
+      //     id: this.id,
+      //     startTime: Date.now()-20,
+      //     endTime: Date.now()
+      //   }
+      // })
+      // .then(mes => {
+      //   let { data } = mes
+      //   if (data.success === "true") {
+      //     // console.log(data)
+      //     this.handleSuccess(data)
+      //   } else if (data.success === "false") {
+      //     this.handleError(data.message)
+      //   }
+      // }, e => {
+      //   this.handleError(e)
+      // })
     },
     handleSuccess(){
       // console.log(1)

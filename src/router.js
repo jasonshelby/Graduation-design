@@ -34,7 +34,7 @@ let router = new Router({
       component: () => import('./views/signin.vue')
     },
     {
-      path: '/doctor',
+      path: '/doctor/:id',
       name: 'doctor',
       component: () => import('./views/doctor.vue')
     },
@@ -49,6 +49,8 @@ let router = new Router({
 router.beforeEach((to, from, next) => {
   let isOnline = state.isOnline || sessionStorage.isOnline === 'true'
   if ((to.name === 'patient' || to.name === 'doctor') && !isOnline) {
+    console.log(22)
+    alert(222)
     next('/about')
   } else {
     next()

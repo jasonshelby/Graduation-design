@@ -1,6 +1,6 @@
 
 <template>
-  <div class="home">
+  <div :class="isPC ? 'home' : 'M-home'">
     <div class="card">
       <div class="img-wrapper">
         <img class="img-content" src="../assets/heart01.jpg" alt="">   
@@ -15,6 +15,15 @@
     </div>
     
 </template>
+
+<script>
+export default {
+  created() {
+    // alert(this.isPC)
+  }
+}
+</script>
+
 
 <style>
 .home{
@@ -45,7 +54,7 @@
   padding-left: 30px;
 }
 
-.home h1{
+.home , .M-home .test-wrapper h1{
   text-align: left;
   font-weight: 100;
   color: rgb(85,85,85);
@@ -53,13 +62,36 @@
   line-height: 35px;
 }
 
-.home p{
+.home , .M-home .test-wrapper p{
   margin-top: 20px;
+  text-align: left;
   text-indent: 2em;
   color: rgb(85,85,85);
   font-family: 'microsoft yahei';
   font-size: 14px;
   line-height: 35px;
+}
+
+.M-home{
+
+}
+
+.M-home .img-wrapper{
+  margin: 1rem 2rem;
+  float:left;
+}
+
+.M-home .img-wrapper .img-content{
+  width: 100%;
+}
+
+.M-home h1{
+  text-align: center;
+  font-size: 24px;
+}
+
+.M-home p{
+  margin: 1rem;
 }
 </style>
 

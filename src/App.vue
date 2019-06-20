@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <el-menu 
+      v-if="isPC"
       class="menu-wrapper" 
       mode="horizontal"
       default-active='/'
@@ -9,16 +10,19 @@
       text-color="#fff"
       active-text-color="#ffd04b"
     >
-      <nav class='nav-left'>
-        <el-menu-item index="/" class="item-left">脉搏波监控系统</el-menu-item>
+      <nav :class="isPC ? 'nav-left' : 'M-top'">
+        <el-menu-item index="/" class="item-left">
+          {{ isPC ? '脉搏波监控系统' : '项目介绍' }}
+        </el-menu-item>
       </nav>
 
       <!-- @TODO 无网络连接 -->
       <!-- @TODO 防止用户请求到其他用户的信息 -->
 
-      <nav class='nav-right'>
+      <nav v-if="isPC" class='nav-right'>
         <el-menu-item v-if="state.isOnline" @click="quit" class="item-right">
-          退出登陆({{state.name}})
+          <!-- 退出登陆({{state.name}}) -->
+          退出登陆(张旭)
         </el-menu-item>
         <el-menu-item v-else index="/signin" class="item-right">注册</el-menu-item>
         <el-menu-item 
@@ -30,7 +34,7 @@
         <el-menu-item v-else index="/login" class="item-right">登陆</el-menu-item>
       </nav>
     </el-menu>
-    <router-view id="app-body"/>
+    <router-view :id="isPC ? 'app-body' : 'M-app-body'"/>
   </div>
 </template>
 
@@ -59,6 +63,7 @@ export default {
       state.isOnline = false
       sessionStorage.isOnline = ''
       sessionStorage.user = ''
+      this.$router.push(`/`)
     }
   }
 }
@@ -79,7 +84,9 @@ export default {
 #app-body{
   width: 1000px;
   min-height: 500px;
-  margin: 0 auto;
+  margin: 6px auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  overflow: hidden;
 }
 .nav-left {
   margin-left: 100px;
@@ -93,5 +100,10 @@ export default {
 }
 #app .menu-wrapper .item-right{
   float: right;
+}
+
+.M-top {
+
+
 }
 </style>
