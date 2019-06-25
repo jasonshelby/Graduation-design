@@ -14,6 +14,9 @@ export default {
   components: {
     UserCard,
   },
+  props:{
+
+  },
   data() {
     return {
       usersData: {

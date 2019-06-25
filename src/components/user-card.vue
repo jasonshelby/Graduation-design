@@ -1,7 +1,8 @@
 <template>
-  <div class="user-card">
+  <div class="user-card" @click="jump">
     <img src="../assets/tx.jpg" alt="" class="head-img">
     <div class="right">
+      <!-- {{state}} -->
       <!-- <div>{{ state.identity ? state.name.substring(0, 1) + '医生' : state.name }}，你好</div> -->
       <div class="name">张旭</div>
       <div>用户名：{{ state.username }}</div>
@@ -9,16 +10,20 @@
       <div>身高：{{ state.height }}cm</div>
       <div>体重：{{ state.weight }}kg</div>
       <div>联系电话：{{ state.phone }}</div>
-      <div class="line"></div>
     </div>
   </div>
 </template>
 <script>
-// import state from '../store/index.js'
 
 export default {
   props:{
     state: Object,
+  },
+  methods:{
+    jump() {
+      let { identity, id} = this.state
+      this.$router.push(`/${identity ? 'doctor' : 'patient'}/${id}`)
+    }
   },
   // data() {
   //   return {

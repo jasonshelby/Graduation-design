@@ -22,7 +22,7 @@ export default {
   },
   created() {
     // console.log('id:', this.id)
-  }, 
+  },  
   mounted() {
     this.chart = echarts.init(document.getElementById('main'))
 

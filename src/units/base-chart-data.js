@@ -32,11 +32,11 @@ export const baseChartOptions = {
   
 }
 
-var now = +new Date() - 60 * 5 * 1000;
+// var now = +new Date() - 60 * 5 * 1000;
 var oneSecond = 5;
 
 export function randomData(mockData, index) {
-  now = new Date(+now + oneSecond);
+  let now = new Date(index * oneSecond);
   return {
     name: now.toString(),
     value: [

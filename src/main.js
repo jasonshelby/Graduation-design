@@ -3,8 +3,6 @@ import App from './App.vue'
 import router from './router'
 import './plugins/element.js'
 
-
-
 Vue.config.productionTip = false
 
 function IsPC() {
@@ -21,7 +19,6 @@ function IsPC() {
   }
   return flag;
 }
-
 Vue.mixin({
   data: function () {
     return {

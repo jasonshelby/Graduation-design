@@ -1,6 +1,6 @@
 
 <template>
-  <div class="home">
+  <div class="signin">
     
     <el-form 
       ref="signInForm" 

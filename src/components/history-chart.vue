@@ -1,6 +1,14 @@
 <template>
   <div class="history-chart">
-    <div class="box">
+    <el-time-picker
+      is-range
+      v-model="value1"
+      range-separator="至"
+      start-placeholder="开始时间"
+      end-placeholder="结束时间"
+      placeholder="选择时间范围">
+    </el-time-picker>
+    
       <div>start: </div>
       <el-input
         class="start"
@@ -15,9 +23,10 @@
         v-model="end"
         clearable>
       </el-input>
-    </div>
    
     <el-button @click="querydata">查询</el-button>
+
+
     <div id="main"></div>
   </div>
 </template>
@@ -33,6 +42,8 @@ const { data: mockData } = user
 export default {
   data() {
     return {
+      value1: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
+      value2: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
       data:[],
       start: '0',
       end: '1000',
@@ -140,3 +151,20 @@ export default {
 }
 
 </style>
+
+      <!-- <div>start: </div>
+      <el-input
+        class="start"
+        placeholder="请输入内容"
+        v-model="start"
+        clearable>
+      </el-input>
+      <div>end: </div>
+      <el-input
+        class="end"
+        placeholder="请输入内容"
+        v-model="end"
+        clearable>
+      </el-input> -->
+   
+    <!-- <el-button @click="querydata">查询</el-button> -->

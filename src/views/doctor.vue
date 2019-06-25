@@ -2,7 +2,7 @@
 <template>
   <div :class="isPC ? 'doctor' : 'M-doctor'">
 
-    <UserCard v-if="isPC"></UserCard>
+    <UserCard v-if="isPC" :state="state"></UserCard>
 
     <el-menu
       :default-active="activeFunc"
@@ -34,6 +34,8 @@
   import UserCard from '../components/user-card'
   import PatientList from '../components/patient-list'
   import None from '../components/none'
+  import state from '../store/index.js'
+
 
 export default {
   components: {
@@ -43,7 +45,8 @@ export default {
   },
   data() {
     return { 
-      activeFunc: 'PatientList'
+      activeFunc: 'PatientList',
+      state,
     };
   },
 
