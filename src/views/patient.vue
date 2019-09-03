@@ -17,13 +17,13 @@
       </el-menu-item>
     </el-menu>
 
-    <component :is="activeChart" class="main"></component>
+    <!-- <component :is="activeChart" class="main"></component> -->
   </div>
 </template>
 
 <script type="module">
-  import ConstantChart from '../components/constant-chart'
-  import HistoryChart from '../components/history-chart'
+  // import ConstantChart from '../components/constant-chart'
+  // import HistoryChart from '../components/history-chart'
   import UserCard from '../components/user-card'
   import state from '../store/index.js'
 
@@ -37,8 +37,8 @@
     },
     components: {
       UserCard,
-      ConstantChart,
-      HistoryChart,
+      // ConstantChart,
+      // HistoryChart,
     },
     methods:{
     }
